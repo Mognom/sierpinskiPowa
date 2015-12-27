@@ -1,19 +1,19 @@
-#include "Sierpinski.h"
+#include "sierpinski.h"
 
 Sierpinski::Sierpinski(){}
 
 Sierpinski::Sierpinski(Triangulo t){
 	
-	calcularSierpinski(t);
+    calcularSierpinski(t);
 	
 }
 
 
-Sierpinski::calcularSierpinski(Triangulo t){
+void Sierpinski::calcularSierpinski(Triangulo t){
 	calcularSierpinski(t, 0);
 }
 
-Sierpinski::calcularSierpinski(Triangulo t, int step){
+void Sierpinski::calcularSierpinski(Triangulo t, int step){
 	
 	if(step >= MAXSTEPS)
 		return;

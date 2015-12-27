@@ -1,7 +1,7 @@
 #include <math.h>
 #include <iostream>
 
-#include "triangulo.h"
+#include "sierpinski.h"
 using namespace std;
 
 int main()
@@ -11,5 +11,8 @@ int main()
     Punto c(0,1);
 
     Triangulo t0(a,b,c);
+    Sierpinski s(t0);
+    std::list<Triangulo> l = s.getLista();
+    printf("%i\n",l.size());
 }
 
