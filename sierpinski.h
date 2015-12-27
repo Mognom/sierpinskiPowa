@@ -1,7 +1,7 @@
 #ifndef SIERPINSKI_H
 #define SIERPINSKI_H
 
-#define MAXSTEPS 2
+#define MAXSTEPS 4 //MAX 13
 
 #include <list>
 #include "triangulo.h"
