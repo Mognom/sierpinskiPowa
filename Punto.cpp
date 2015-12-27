@@ -1,3 +1,5 @@
+#include "Punto.h"
+
 //Crea un punto a partir de sus dos coordenadas
 Punto::Punto(float x, float y){
 	this.x = x;
