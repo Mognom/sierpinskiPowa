@@ -35,7 +35,9 @@ void Sierpinski::calcularSierpinski(Triangulo t, int step){
 	Triangulo t2(aux1, puntoB, aux2);
 	Triangulo t3( aux3, aux2, puntoC);
 	
-	calcularSierpinski(t1,step+1);
-	calcularSierpinski(t2,step+1);
-	calcularSierpinski(t3,step+1);
+	step = step+1;
+	
+	calcularSierpinski(t1,step);
+	calcularSierpinski(t2,step);
+	calcularSierpinski(t3,step);
 }
