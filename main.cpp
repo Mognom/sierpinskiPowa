@@ -1,6 +1,7 @@
 #include <math.h>
 #include <iostream>
 #include <stdio.h>
+#include <ctime>
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include "sierpinski.h"
@@ -37,6 +38,7 @@ void ejesdecolores(void){
 }
 
 void dibujar(){
+    clock_t reloj = clock();
     glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
     glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
     glColor3f(0.98f,0.73f,0.85f);
@@ -53,6 +55,8 @@ void dibujar(){
         glPopMatrix();
     }
     glutSwapBuffers();
+    reloj = clock() - reloj;
+    printf("Dibujar nos llevo: %f segundos\n",((float)reloj)/CLOCKS_PER_SEC);
 }
 
 
@@ -62,10 +66,14 @@ int main(int argc, char** argv)
     Punto b(sqrt(3)/2,0.5);
     Punto c(0,1);
 
+
     Triangulo t0(a,b,c);
+    clock_t reloj = clock();
     Sierpinski s(t0);
+    reloj = clock() - reloj;
     l = s.getLista();
     printf("%i\n",l.size());
+    printf("Sierpinski nos llevo: %f segundos\n",((float)reloj)/CLOCKS_PER_SEC);
     glutInit(&argc,argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize (600,600);
