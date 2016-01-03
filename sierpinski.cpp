@@ -15,8 +15,10 @@ void Sierpinski::calcularSierpinski(Triangulo t){
 
 void Sierpinski::calcularSierpinski(Triangulo t, int step){
 	
-	if(step >= MAXSTEPS)
+	if(step >= MAXSTEPS){
+		lista.push_back(t);
 		return;
+	}
 	
 	//calcula los puntos medios del triangulo actual
 	Punto aux1(t.getA().middlePoint(t.getB()));
@@ -27,10 +29,6 @@ void Sierpinski::calcularSierpinski(Triangulo t, int step){
 	Triangulo t1(t.getA(), aux1, aux3);
 	Triangulo t2(aux1, t.getB(), aux2);
 	Triangulo t3( aux3, aux2, t.getC());
-	
-	lista.push_back(t1);
-	lista.push_back(t2);
-	lista.push_back(t3);
 	
 	calcularSierpinski(t1,step+1);
 	calcularSierpinski(t2,step+1);
