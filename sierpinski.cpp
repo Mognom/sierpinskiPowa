@@ -15,6 +15,7 @@ void Sierpinski::calcularSierpinski(Triangulo t){
 
 void Sierpinski::calcularSierpinski(Triangulo t, int step){
 	
+	//Si es el ultimo paso, añade el triangulo que tiene a la lista final
 	if(step >= MAXSTEPS){
 		lista.push_back(t);
 		return;
@@ -30,14 +31,11 @@ void Sierpinski::calcularSierpinski(Triangulo t, int step){
 	Punto aux2(puntoB.middlePoint(puntoC));
 	Punto aux3(puntoC.middlePoint(puntoA));
 	
-	//A partir de los puntos medios calcula los siguientes triangulos
-	Triangulo t1(puntoA, aux1, aux3);
-	Triangulo t2(aux1, puntoB, aux2);
-	Triangulo t3( aux3, aux2, puntoC);
-	
+	//Precalcula el step
 	step = step+1;
 	
-	calcularSierpinski(t1,step);
-	calcularSierpinski(t2,step);
-	calcularSierpinski(t3,step);
+	//Calcula los siguientes pasos de forma recursiva
+	calcularSierpinski(Triangulo(PuntoA, aux1, aux3), step);
+	calcularSierpinski(Triangulo(aux1, puntoB, aux2), step);
+	calcularSierpinski(Triangulo(aux1, puntoB, aux2), step);
 }
