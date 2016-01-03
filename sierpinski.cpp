@@ -20,10 +20,15 @@ void Sierpinski::calcularSierpinski(Triangulo t, int step){
 		return;
 	}
 	
+	//Cachea las busqueadas del punto
+	Punto puntoA = t.getA();
+	Punto puntoB = t.getB();
+	Punto puntoC = t.getC();
+	
 	//calcula los puntos medios del triangulo actual
-	Punto aux1(t.getA().middlePoint(t.getB()));
-	Punto aux2(t.getB().middlePoint(t.getC()));
-	Punto aux3(t.getC().middlePoint(t.getA()));
+	Punto aux1(puntoA.middlePoint(puntoB));
+	Punto aux2(puntoB.middlePoint(puntoC));
+	Punto aux3(puntoC.middlePoint(puntoA));
 	
 	//A partir de los puntos medios calcula los siguientes triangulos
 	Triangulo t1(t.getA(), aux1, aux3);
