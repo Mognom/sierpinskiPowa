@@ -31,9 +31,9 @@ void Sierpinski::calcularSierpinski(Triangulo t, int step){
 	Punto aux3(puntoC.middlePoint(puntoA));
 	
 	//A partir de los puntos medios calcula los siguientes triangulos
-	Triangulo t1(t.getA(), aux1, aux3);
-	Triangulo t2(aux1, t.getB(), aux2);
-	Triangulo t3( aux3, aux2, t.getC());
+	Triangulo t1(puntoA, aux1, aux3);
+	Triangulo t2(aux1, puntoB, aux2);
+	Triangulo t3( aux3, aux2, puntoC);
 	
 	calcularSierpinski(t1,step+1);
 	calcularSierpinski(t2,step+1);
