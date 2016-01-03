@@ -1,6 +1,7 @@
 #include <math.h>
 #include <iostream>
 #include <stdio.h>
+#include <ctime>
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include "sierpinski.h"
@@ -39,11 +40,10 @@ void ejesdecolores(void){
 void dibujar(){
     glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
     glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-    glColor3f(0.98f,0.73f,0.85f);
     //ejesdecolores();
+    glColor3f(0.98f,0.73f,0.85f);
     for (list<Triangulo>::iterator iterator = l.begin(), end = l.end(); iterator != end; ++iterator){
         glPushMatrix();
-
         glBegin(GL_TRIANGLES);
         glVertex2f((*iterator).getA().getX(),(*iterator).getA().getY());
         glVertex2f((*iterator).getB().getX(),(*iterator).getB().getY());
@@ -58,21 +58,27 @@ void dibujar(){
 
 int main(int argc, char** argv)
 {
-    Punto a(0,0);
-    Punto b(sqrt(3)/2,0.5);
-    Punto c(0,1);
+    Punto a((0-0.5) * 1.5, (0-0.5) * 1.5);
+    Punto b((0.5-0.5) * 1.5, ((sqrt(3)/2) - 0.5) * 1.5);
+    Punto c((1-0.5) * 1.5, (0-0.5) * 1.5);
 
     Triangulo t0(a,b,c);
+    clock_t reloj;
+    reloj = clock();
     Sierpinski s(t0);
+    reloj = clock() - reloj;
     l = s.getLista();
     printf("%i\n",l.size());
+    printf("Sierpinski nos llevo: %f segundos\n",((float)reloj)/CLOCKS_PER_SEC);
     glutInit(&argc,argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize (600,600);
     glutInitWindowPosition (100, 100);
-    glutCreateWindow ("Sierpinski");
-    glutDisplayFunc(dibujar);
-    glutReshapeFunc(reshape3d);
+    glutCreateWindow("Sierpinski");
+    reloj = clock();
+    dibujar();
+    reloj = clock() - reloj;
+    printf("Dibujar nos llevo: %f segundos\n",((float)reloj)/CLOCKS_PER_SEC);
     glutMainLoop();
     return 0;
 }
