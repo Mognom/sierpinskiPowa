@@ -1,4 +1,5 @@
 #include "sierpinski.h"
+#include <math.h>
 
 Sierpinski::Sierpinski(){}
 
@@ -10,7 +11,7 @@ Sierpinski::Sierpinski(Triangulo t){
 
 
 void Sierpinski::calcularSierpinski(Triangulo t){
-	listaTrabajos.push_back(t, 0);
+	listaTrabajos.push_back(std::tuple<Triangulo,int> (t, 0));
 	
 	Triangulo triActual;
 	int stepActual;
@@ -18,11 +19,12 @@ void Sierpinski::calcularSierpinski(Triangulo t){
 	std::tuple<Triangulo,int> tuplaActual;
 	
 	//Calcula cuantos hay al final
-	stop = Math.pow(MAXSTEPS-1,3);
+	stop = pow(3,MAXSTEPS);
 	
 	while (stop > 0){
 		//Lee el trabajo actual
-		tuplaActual = listaTrabajos.pop();
+		tuplaActual = listaTrabajos.back();
+		listaTrabajos.pop_back();
 		triActual = std::get<0> (tuplaActual);
 		stepActual = std::get<1> (tuplaActual);
 		
