@@ -14,36 +14,29 @@ Sierpinski::Sierpinski(Triangulo t){
 
 void Sierpinski::calcularSierpinski(Triangulo t){
 
-    listaTrabajos.push_back(std::tuple<Triangulo, int>(t, 0));
+	//Cachea las busqueadas del punto
+	Punto puntoA = t.getA();
+	Punto puntoB = t.getB();
+	Punto puntoC = t.getC();
 	
-	Triangulo triActual;
-	int stepActual;
-	
-	std::tuple<Triangulo,int> tuplaActual;
-	
-	//Calcula cuantos hay al final
-    stop = pow(3,MAXSTEPS);
+	//calcula los puntos medios del triangulo actual
+	Punto aux1(puntoA.middlePoint(puntoB));
+	Punto aux2(puntoB.middlePoint(puntoC));
+	Punto aux3(puntoC.middlePoint(puntoA));
 
-    #pragma omp parallel private(triActual, stepActual, tuplaActual)
-	while (stop > 0){
-		//Lee el trabajo actual
-		#pragma omp critical
-		{
-			if(listaTrabajos.empty())
-				flag = true;
-			else{
-				tuplaActual = listaTrabajos.back();
-				listaTrabajos.pop_back();
-			}
-		}
-		if(!flag){
-			triActual = std::get<0> (tuplaActual);
-			stepActual = std::get<1> (tuplaActual);
-		
-			//Realiza el trabajo
-			calcularSierpinski(triActual, stepActual);
-		}
+	//Calcula los siguientes pasos de forma recursiva
+	#pragma omp single nowait
+	{
+		#pragma omp task
+		calcularSierpinski(Triangulo(puntoA, aux1, aux3), 1);
+		#pragma omp task
+		calcularSierpinski(Triangulo(aux1, puntoB, aux2), 1);
+		#pragma omp task
+		calcularSierpinski(Triangulo(aux3, aux2, puntoC), 1);
 	}
+	
+	#pragma omp taskwait
+	
 }
 
 void Sierpinski::calcularSierpinski(Triangulo t, int step){
@@ -68,12 +61,10 @@ void Sierpinski::calcularSierpinski(Triangulo t, int step){
 	//Precalcula el step
 	step = step+1;
 	
-	listaTrabajos.push_back(std::tuple<Triangulo,int> (Triangulo(puntoA, aux1, aux3), step));
-	listaTrabajos.push_back(std::tuple<Triangulo,int> (Triangulo(aux1, puntoB, aux2), step));
-	listaTrabajos.push_back(std::tuple<Triangulo,int> (Triangulo(aux3, aux2, puntoC), step));
 	
 	//Calcula los siguientes pasos de forma recursiva
-    //calcularSierpinski(Triangulo(puntoA, aux1, aux3), step);
-	//calcularSierpinski(Triangulo(aux1, puntoB, aux2), step);
-    //calcularSierpinski(Triangulo(aux3, aux2, puntoC), step);
+	calcularSierpinski(Triangulo(puntoA, aux1, aux3), step);
+	calcularSierpinski(Triangulo(aux1, puntoB, aux2), step);
+	calcularSierpinski(Triangulo(aux3, aux2, puntoC), step);
+	}
 }
