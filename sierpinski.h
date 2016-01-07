@@ -20,7 +20,7 @@ private:
 public:
     Sierpinski();
     Sierpinski(Triangulo t);
-    std::list<Triangulo> getLista(){return lista;}
+    std::list<Triangulo> getLista(){return listaResultado;}
 
 };
 

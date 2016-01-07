@@ -1,16 +1,20 @@
 #include "sierpinski.h"
+#include <math.h>
+#include <omp.h>
 
 Sierpinski::Sierpinski(){}
 
 Sierpinski::Sierpinski(Triangulo t){
 	
     calcularSierpinski(t);
-	
+    omp_set_num_threads(8);
+
 }
 
 
 void Sierpinski::calcularSierpinski(Triangulo t){
-	listaTrabajos.push_back(t, 0);
+
+    listaTrabajos.push_back(std::tuple<Triangulo, int>(t, 0));
 	
 	Triangulo triActual;
 	int stepActual;
@@ -18,12 +22,17 @@ void Sierpinski::calcularSierpinski(Triangulo t){
 	std::tuple<Triangulo,int> tuplaActual;
 	
 	//Calcula cuantos hay al final
-	stop = Math.pow(MAXSTEPS-1,3);
-	
-	#pragma omp parallel private(triActual, stepActual, tuplaActual) shared(listaResultado, listaTrabajos,stop)
+    stop = pow(3,MAXSTEPS);
+
+    #pragma omp parallel private(triActual, stepActual, tuplaActual) //shared(listaResultado, listaTrabajos,stop)
+        #pragma omp master
+            printf("%i\n",omp_get_num_threads());
+        #pragma omp master
+            printf("%i\n",omp_get_num_procs());
 	while (stop > 0){
 		//Lee el trabajo actual
-		tuplaActual = listaTrabajos.pop();
+        tuplaActual = listaTrabajos.back();
+        listaTrabajos.pop_back();
 		triActual = std::get<0> (tuplaActual);
 		stepActual = std::get<1> (tuplaActual);
 		
