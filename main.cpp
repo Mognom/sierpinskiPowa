@@ -42,17 +42,12 @@ void dibujar(){
     glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
     //ejesdecolores();
     glColor3f(0.98f,0.73f,0.85f);
-	
-	#pragma omp parallel
-	while(!l.empty()){
-		Triangulo actual = l.front();
-		l.pop_front();
-		
+    for (list<Triangulo>::iterator iterator = l.begin(), end = l.end(); iterator != end; ++iterator){
         glPushMatrix();
         glBegin(GL_TRIANGLES);
-        glVertex2f(actual.getA().getX(),actual.getA().getY());
-        glVertex2f(actual.getB().getX(),actual.getB().getY());
-        glVertex2f(actual.getC().getX(),actual.getC().getY());
+        glVertex2f((*iterator).getA().getX(),(*iterator).getA().getY());
+        glVertex2f((*iterator).getB().getX(),(*iterator).getB().getY());
+        glVertex2f((*iterator).getC().getX(),(*iterator).getC().getY());
         glEnd();
 
         glPopMatrix();
