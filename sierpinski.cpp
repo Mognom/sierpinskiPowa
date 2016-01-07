@@ -24,20 +24,25 @@ void Sierpinski::calcularSierpinski(Triangulo t){
 	//Calcula cuantos hay al final
     stop = pow(3,MAXSTEPS);
 
-    #pragma omp parallel private(triActual, stepActual, tuplaActual) //shared(listaResultado, listaTrabajos,stop)
-        #pragma omp master
-            printf("%i\n",omp_get_num_threads());
-        #pragma omp master
-            printf("%i\n",omp_get_num_procs());
+    #pragma omp parallel private(triActual, stepActual, tuplaActual)
 	while (stop > 0){
 		//Lee el trabajo actual
-        tuplaActual = listaTrabajos.back();
-        listaTrabajos.pop_back();
-		triActual = std::get<0> (tuplaActual);
-		stepActual = std::get<1> (tuplaActual);
+		#pragma omp critical
+		{
+			if(listaTrabajos.empty())
+				flag = true;
+			else{
+				tuplaActual = listaTrabajos.back();
+				listaTrabajos.pop_back();
+			}
+		}
+		if(!flag){
+			triActual = std::get<0> (tuplaActual);
+			stepActual = std::get<1> (tuplaActual);
 		
-		//Realiza el trabajo
-		calcularSierpinski(triActual, stepActual);
+			//Realiza el trabajo
+			calcularSierpinski(triActual, stepActual);
+		}
 	}
 }
 
