@@ -10,13 +10,34 @@ Sierpinski::Sierpinski(Triangulo t){
 
 
 void Sierpinski::calcularSierpinski(Triangulo t){
-	calcularSierpinski(t, 0);
+	listaTrabajos.push_back(t, 0);
+	
+	Triangulo triActual;
+	int stepActual;
+	
+	std::tuple<Triangulo,int> tuplaActual;
+	
+	//Calcula cuantos hay al final
+	stop = Math.pow(MAXSTEPS-1,3);
+	
+	while (stop > 0){
+		//Lee el trabajo actual
+		tuplaActual = listaTrabajos.pop();
+		triActual = std::get<0> (tuplaActual);
+		stepActual = std::get<1> (tuplaActual);
+		
+		//Realiza el trabajo
+		calcularSierpinski(triActual, stepActual);
+	}
 }
 
 void Sierpinski::calcularSierpinski(Triangulo t, int step){
 	
-	if(step >= MAXSTEPS)
+	//Si es el ultimo paso, añade el triangulo que tiene a la lista final
+	if(step >= MAXSTEPS){
+		stop--;
 		return;
+	}
 	
 	//calcula los puntos medios del triangulo actual
 	Punto aux1(t.getA().middlePoint(t.getB()));
@@ -28,11 +49,12 @@ void Sierpinski::calcularSierpinski(Triangulo t, int step){
 	Triangulo t2(aux1, t.getB(), aux2);
 	Triangulo t3( aux3, aux2, t.getC());
 	
-	lista.push_back(t1);
-	lista.push_back(t2);
-	lista.push_back(t3);
+	listaTrabajos.push_back(std::tuple<Triangulo,int> (t1, step+1));
+	listaTrabajos.push_back(std::tuple<Triangulo,int> (t2, step+1));
+	listaTrabajos.push_back(std::tuple<Triangulo,int> (t3, step+1));
 	
-	calcularSierpinski(t1,step+1);
-	calcularSierpinski(t2,step+1);
-	calcularSierpinski(t3,step+1);
+	listaResultado.push_back(t1);
+	listaResultado.push_back(t2);
+	listaResultado.push_back(t3);
+	
 }
